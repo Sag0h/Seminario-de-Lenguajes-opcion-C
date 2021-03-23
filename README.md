@@ -1,7 +1,4 @@
 # Seminario-de-Lenguajes-opcion-C
-## 1.Practica
+## 1.Practicas
  * _Practicas dadas por la catedra_
-
-## 2. Ejemplos
-  * _Ejemplos de las explicaciones prácticas_
 
