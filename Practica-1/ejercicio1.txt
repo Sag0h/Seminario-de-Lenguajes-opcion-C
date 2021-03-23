@@ -1,0 +1,22 @@
+A continuación se nombran los distintos procesos involucrados en la generación de un eje-
+cutable a partir de uno o varios fuentes. Con la lista de nombres, establezca el orden en que
+suceden durante el proceso de generación de un ejecutable y describa qué es lo que ocurre
+en cada uno de los pasos
+
+
+1. Proceso de linker o enlazador
+2. Generación de código ensamblador
+3. Código fuente: considere que existe más de un fuente que compone al programa y se
+emplean librerías del sistema
+4. Generación de código objeto relocalizable
+5. Ejecutable
+6. Preprocesador del fuente
+
+Resolucion: 
+
+1. Codigo fuente
+2. Preprocesador del fuente
+3. Generación de codigo ensamblador
+4. Generación del codigo objeto relocalizable
+5. Proceso de linker o enlazador
+6. Ejecutable
