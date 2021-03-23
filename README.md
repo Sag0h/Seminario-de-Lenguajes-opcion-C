@@ -1,3 +1,7 @@
 # Seminario-de-Lenguajes-opcion-C
-Practica-1 del Seminario.
-Ejemplos tiene ejemplos sacados de la explicacion práctica.
+## Practica
+_• practicas dadas por la catedra_
+
+## Ejemplos
+_• ejemplos de las explicaciones prácticas_
+
