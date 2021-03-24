@@ -1,0 +1,11 @@
+Diferencia entre .h y .c
+
+interfaz (.h) 
+	prototipos de función (int x(int a, int b);)
+	declaraciones de tipos de datos (typedef)
+	declaraciones de variables (extern int x;)
+
+implementación (.c)  
+	definición de funciones (int x(int a, int b) { return a + b })
+	definición de variables (int x;)
+
