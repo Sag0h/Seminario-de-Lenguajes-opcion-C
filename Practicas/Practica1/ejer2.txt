@@ -1,0 +1,6 @@
+2. Analice los tipos de productos mencionados a continuación en el mercado, considerando en
+todos los casos el tipo de licencia empleada por cada producto nombrado:
+1. Editores de código C
+2. Compiladores C
+3. Debuggers de código C
+4. IDE (Integrated Development Environment o Entorno de Desarrollo Integrado)

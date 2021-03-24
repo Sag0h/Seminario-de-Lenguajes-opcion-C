@@ -14,8 +14,8 @@ emplean librerías del sistema
 
 Resolucion: 
 
-1. Codigo fuente
-2. Preprocesador del fuente
+1. Codigo fuente -> Se escribe el codigo fuente en C.
+2. Preprocesador del fuente -> 
 3. Generación de codigo ensamblador
 4. Generación del codigo objeto relocalizable
 5. Proceso de linker o enlazador

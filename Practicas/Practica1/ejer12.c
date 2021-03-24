@@ -9,6 +9,6 @@ float promedio(unsigned int a,unsigned int b){
 
 
 int main(){
-    printf("%.2f\n",promedio(9,10));
+    printf("%.2f\n",promedio(6,6));
     return 0;
 }
