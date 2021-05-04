@@ -38,6 +38,7 @@ int main(){
             }   
         }
         
+        
     } while (res != EOF);
     return 0;
 }
