@@ -1,4 +1,6 @@
+#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 char *my_strcat(char *dest, const char *src){
 
@@ -53,36 +55,32 @@ char *my_strcpy(char *dest, const char *src){
 
 size_t my_strlen(const char *s){
     int i = 0;
-    const char *p;
-    for(p = s; *p != 0; p++){
+    for(; *s != 0; s++){
         i++;
     }
     return i;
 }
-
-char *my_strstr(const char *haystack, const char *needle){
-    const char *p = haystack;
-    int ok = 0;
-    char *aux;
-    int pos = 0;
-    while((*p != 0)&&(!ok)){
-        if(*p == *needle){
-            needle++;
-            if(*needle == 0) ok = 1;
-            if(pos == 0){
-                pos++;
-                aux = p;
-            }
-        }else pos = 0;
-        p++;
+ 
+const char *my_strstr(const char *haystack, const char *needle) {
+    int i = 0;
+    while (haystack[i] != 0) {
+        if (strncmp(haystack + i, needle, strlen(needle)) == 0) {
+            return haystack + i;
+        }
+        i++;
     }
-    if(ok) return aux;
     return NULL;
 }
+ 
+int main(){
+    char *cadena = "asdasdshoSadadsaholaasdad";
+    printf("%s\n", my_strstr(cadena, "hola"));
+}
+ 
 
 int main(int argc, char const *argv[]) {
     char s1[255] = "Hola";
-    char s2[255] = " Chauxd";
+    char s2[255] = " abhoasdadhola";
 
     my_strcat(s1, s2);
 
@@ -100,7 +98,7 @@ int main(int argc, char const *argv[]) {
 
     printf("El tamaño del string s1 es: %ld\n", my_strlen(s1));
 
-    printf("Substring \"xd\": %s\n", my_strstr(s2, "xd"));
+    printf("Substring \"hola\": %s\n", my_strstr(s2, "hola"));
 
     return 0;
 }
