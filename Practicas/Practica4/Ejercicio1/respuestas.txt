@@ -1,0 +1,3 @@
+b)- falta el .h
+c)- no, se usa un header .h 
+d)- incluimos las definiciones y funciones en el .h y compilamos todos los .c a la vez.
