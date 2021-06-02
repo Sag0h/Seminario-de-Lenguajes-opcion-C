@@ -1,0 +1,8 @@
+Caso 1: Se limita el alcance de la variable a este .c, si se llama a \
+"mi_variable" con un extern, no se la va a encontrar.
+
+Caso 2: lo mismo que el caso 1, pero en una funcion.
+
+Caso 3: El tiempo de vida de la variable "a" es estatico, es decir,\
+ el valor permanece en cada llamada a la funcion y aun cuando la funcion terminó.
+

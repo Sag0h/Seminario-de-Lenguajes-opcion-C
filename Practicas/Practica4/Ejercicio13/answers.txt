@@ -1,0 +1,3 @@
+a). funciona porque la funcion suma no es static y se la trata como extern.
+b). no funciona porque la funcion prod es estatica,\
+ no tiene visibilidad fuera de su .c

@@ -1,0 +1,2 @@
+En conclusion cuando se usen punteros en los struct no se deben copiar dos structs, \
+porque al cambiar un campo puntero, estariamos cambiando ambos.
