@@ -1,0 +1,8 @@
+1.  Las macros en el str_vector_t.h -comprobar que estan bien, que modificar, etc.
+2.  si esta bien declarar static las funciones privadas. linea 44, 92 de str_vector_t.c
+3.  Comprobar el random sort(linea 92).
+4.  la ordenacion por insercion de strings (linea 153) si interprete bien el enunciado y hay que hacer eso.
+5.  como hacer los contadores -i -o, (main).
+6.  si tengo que modularizar el main en un .h
+7.  linea 55 y 67 main, comprobacion de apertura de archivo.
+8.  linea 108 main, preguntar si esta bien.
