@@ -1,12 +1,18 @@
 #ifndef STR_VECTOR_T_H
 #define STR_VECTOR_T_H 1
 
-enum sort_mode{SECUENCIAL, INVERTIDO, ALEATORIO};
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <stdio.h>
+
+enum sort_mode {SEQUENTIAL, REVERSE, SHUFFLE};
 
 struct str_vect{
-    int dimF;
-    int dimL;
-    char *string;
+    int p_dim;
+    int l_dim;
+    char **str_array;
 };
 
 typedef struct str_vect str_vector_t;
@@ -18,7 +24,7 @@ typedef struct str_vect str_vector_t;
 // posición index no existe retorna NULL.
 
 #define str_vector_get(vector, index) {\
-    ((index) < (vector->dimL)) ? (vector->string[(index)]) : NULL ;\
+    ((index) < (vector.l_dim)) ? (vector.str_array[(index)]) : NULL ;\
 }
 
 // Guarda el elemento en la posición index del vector, si el
@@ -30,12 +36,12 @@ typedef struct str_vect str_vector_t;
 // CUIDADO USAR ESTA MACRO PISA LOS ELEMENTOS SI EL INDICE ESTA ENTRE LA DIM LOGICA.
 
 #define str_vector_set(vector, index, elemento) {\
-    if((index) > (vector->dimL)){\
-        (vector->dimL) = (index);\
-        (vector->dimF) = (index);\
-        (vector->string) = realloc((vector->string), (sizeof(char *) * (vector->dimL)));\
-        (vector->string[(index)] = (elemento);\
-    }else (vector->string[(index)]) = (elemento);\
+    if((index) > (vector->l_dim)){\
+        (vector->l_dim) = (index);\
+        (vector->p_dim) = (index);\
+        (vector->str_array) = realloc((vector->str_array), (sizeof(char *) * (vector->l_dim)));\
+        (vector->str_array[(index)] = (elemento);\
+    }else (vector->str_array[(index)]) = (elemento);\
 }
 
 /******************************************************************

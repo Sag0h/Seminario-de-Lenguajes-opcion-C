@@ -1,7 +1,9 @@
-#include "str_vector_t.h"
+#include "sortlib.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include "error-sort.h"
 
 /*
 -r o --reverse
@@ -14,11 +16,9 @@ Lee las líneas desde el archivo indicado. Si se omite se leen desde stdin.
 Escribe los resultados en el archivo indicado. Si se omite se escriben en stdout.
 */
 
-#define COD_ERROR_FALTA_NOMBRE -2
-
-void count_function(FILE *input){
-
-}
+#define COD_ERROR_FALTA_NOMBRE 2
+#define COD_ERROR_ARG_INV 3
+#define COD_ERROR_I_O_MAX 4
 
 void help(){
     puts("Este programa se utiliza mediante los siguientes argumentos:");
@@ -33,99 +33,122 @@ void help(){
 int procesar_args(
         int argc,
         char *argv[],
+        char **arg_i,
+        char **arg_o,
         int *reverse,
         int *shuffle,
-        int *count,
-        FILE **input,
-        FILE **output
+        int *count
 ) {
     // falta contador para evitar repetidos de -i y -o
-
-    int i_c, o_c; // contadores para evitar repetidos -i y -o
-    i_c = o_c = 0;
+    int arg_i_c = 0;
+    int arg_o_c = 0;
+    *arg_i = NULL;
+    *arg_o = NULL;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-r") || strcmp(argv[i], "--reverse")) {
+       
+        if ((!strcmp(argv[i], "-r")) || (!strcmp(argv[i], "--reverse"))) {
             *reverse = 1;
-        } else if (strcmp(argv[i], "-s") || strcmp(argv[i], "--shuffle")) {
+       
+        } else if ((!strcmp(argv[i], "-s")) || (!strcmp(argv[i], "--shuffle"))) {
             *shuffle = 1;
-        } else if (strcmp(argv[i], "-i") || strcmp(argv[i], "--input")) {
-            i_c++;
-            if (i + 1 < argc) {
-                *input = fopen(argv[i + 1], "r");
-                if(*input == NULL){
-                    puts("Error al abrir, se abrira el stdin.");
-                }
+       
+        } else if ((!strcmp(argv[i], "-i")) || (!strcmp(argv[i], "--input"))) {
+            arg_i_c++;
+            if ((i + 1) < argc) {
+                *arg_i = argv[i+1];
+                i++;
             } else {
                 puts("Error. No se ingreso nombre del archivo.");
                 return COD_ERROR_FALTA_NOMBRE;
             }
-            i++;
-        } else if (strcmp(argv[i], "-o") || strcmp(argv[i], "--output")) {
-            o_c++;
-            if (i + 1 < argc) {
-                *output= fopen(argv[i + 1], "w");
-                if(*output == NULL){
-                    puts("Error al abrir, se abrira el stout.");
+            
+        } else if ((!strcmp(argv[i], "-o")) || (!strcmp(argv[i], "--output"))) {
+            arg_o_c++;
+            if ((i + 1) < argc) {
+                *arg_o = argv[i+1];
+                i++;
             } else {
                 puts("Error. No se ingreso nombre del archivo.");
                 return COD_ERROR_FALTA_NOMBRE;
             }
-            i++;
-        } else if(strcmp(argv[i], "-c") || strcmp(argv[i], "--count")){
+        } else if(!strcmp(argv[i], "-c") || (!strcmp(argv[i], "--count"))){
             *count = 1;
-        } else if (strcmp(argv[i], "--help")){
-                help();
-                exit(0);
+        } else if (!strcmp(argv[i], "--help")){
+            help();
+            exit(0);
+        }else {
+            printf("Argumento invalido \"%s\"\n", argv[i]);
+            return COD_ERROR_ARG_INV;
         }
     }
-    
 
-    if (*input == NULL) *input = stdin;
-    if (*output == NULL) *output = stdout;
+    if( (arg_i_c > 1) || (arg_o_c > 1)){
+        return COD_ERROR_I_O_MAX;
+    }
 
     return 0;
 }
 
-int main(int argc, char *argv[]) {
+
+
+int main(int argc, char *argv[]){
+    
     int reverse, shuffle, count;
     FILE *input, *output;
+    char *arg_i; 
+    char *arg_o;
     reverse = shuffle = count = 0;
     input = output = NULL;
 
-    int error = procesar_args(argc, argv, &reverse, &shuffle, &count ,&input, &output);
+    int error = procesar_args(argc, argv, &arg_i, &arg_o ,&reverse, &shuffle, &count);
 
     if (error) {
         help();
         return -1;
     }
 
-    if (reverse && shuffle) {
+    if ((reverse) && (shuffle)) {
+        puts("Warning: no se puede usar -r --reverse y -s --shuffle a la vez.");
         help();
         return -2;
     }
 
+  
+    // Open file
+    if ( (arg_i !=NULL) && (! (input = fopen(arg_i,"r")) ) ){
+        output_error(stderr, -E_FILE_ERROR);
+        perror(" ");
+        exit(-E_FILE_ERROR);  
+    }
+
+    // Open file
+    if ( (arg_o !=NULL) && (! (output = fopen(arg_o,"w")) ) ) {
+        output_error(stderr, -E_FILE_ERROR);
+        perror(" ");
+        exit(-E_FILE_ERROR);  
+    }
+
+    if(arg_i == NULL){
+        input = stdin;
+        arg_i = "STDIN";
+    }
+
+    if(arg_o == NULL){
+        output = stdout;
+        arg_o = "STDOUT";
+    }
+
     if(count){
-        if(shuffle || reverse || (output != NULL)) puts("Warning: se ignorarán los argumentos: \"-o , --output <archivo>, -s, --shuffle, -r, --reverse\".");
-        count_function(&input);
+        if((shuffle) || (reverse)){
+            puts("Warning: se ignorarán los argumentos: \"-o , --output <archivo>, -s, --shuffle, -r, --reverse\".");
+        } 
+        count_function(input);
+        exit(0);
     }
+
+    // leer y ordena
     
-    enum sort_mode mode;
-
-    if(reverse){
-        mode = INVERTIDO;
-    }else if(shuffle){
-        mode = ALEATORIO;
-    }else mode = SECUENCIAL;
-
-    // leer y ordenar
-    str_vector_t vector = str_vector_new();
-    char *str = malloc(sizeof(char) * 512);
-    while(!feof(input)){
-        *str = fgets(str, 512, input);
-        str_vector_append_sorted(&vector, str, mode);
-    }
-
-
-
+    sort_file(input, output, reverse, shuffle);
+    fclose(input);fclose(output);
 }
