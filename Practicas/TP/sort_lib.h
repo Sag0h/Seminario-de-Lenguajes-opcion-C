@@ -1,5 +1,5 @@
-#ifndef SORTLIB_H
-#define SORTLIB_H
+#ifndef SORT_LIB_H
+#define SORT_LIB_H
 
 #include <stdbool.h>
 #include <stdlib.h>

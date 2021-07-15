@@ -62,44 +62,16 @@ void str_vector_append_sorted(str_vector_t *vector, char *string, enum sort_mode
         vector->str_array[index] = string;
     }else{
         if(vector->l_dim == 1){
-            vector->str_array[vector->l_dim-1] = string;
+            vector->str_array[0] = string;
         }else{
-            int pos, res;
-            if(mode == REVERSE){   
+            int pos, i = 0;
+            if(mode == REVERSE){
+                while((i < vector->l_dim-1) && (strcmp(string, vector->str_array[i]) < 0)) i++;
+            }else while((i < vector->l_dim-1) && (strcmp(string, vector->str_array[i]) > 0)) i++;
+           
+            pos = i;
 
-                int i = 0;
-                bool found = false;
-
-                while( i < vector->l_dim && !found){
-
-                    if( (res = strcmp(string, vector->str_array[i])) > 0 ){
-                        pos = i;
-                        found = true;
-                    }else i++;
-
-                }
-                if(!found) pos = vector->l_dim-1;
-
-
-            }else if (mode == SEQUENTIAL){
-
-                int i = 0;
-                bool found = false;
-                
-                while( i < vector->l_dim && !found){
-                
-                    if( (res = strcmp(string, vector->str_array[i])) < 0 ){
-                        pos = i;
-                        found = true;
-                    }else i++;
-                
-                }
-                
-                if(!found) pos = vector->l_dim-1;
-
-            }
-            
-            for(int i = vector->l_dim-1; i > pos; i--){
+            for(i = vector->l_dim-1; i > pos; i--){
                 vector->str_array[i] = vector->str_array[i-1];
             }
             vector->str_array[pos] = string;  
@@ -123,52 +95,25 @@ void str_vector_resize(str_vector_t *vector, unsigned elements){
 }
 
 static void shuffle(str_vector_t *vector){
-    int arreglo_aux[vector->l_dim];
-    int index;
     srand(time(NULL));
-    bool ok;
-    for(int i=0; i < vector->l_dim; i++){
-        ok = false;
-        index = rand() % vector->l_dim+1;
-        while(!ok){
-            //compruebo que el index sea unico.
-            for(int j = 0; ((j < i) && (!ok)); j++){
-                if(arreglo_aux[j] == index) ok = true;
-            } //compruebo que no exista antes en el vector de indices
-            if(ok){ 
-                index = rand() % vector->l_dim+1;                          
-                ok = false;
-
-                // si existia busco otro indice random pongo en false para que entre en el while de nuevo
-
-            }else ok = true;    
-             //si no existia el indice pongo en true para salir del while y luego lo agrego a la posicion actual.
-        }
-        arreglo_aux[i] = index;
+    for(int i = 0; i < (vector->l_dim/2); i++){
+        int index = rand() % vector->l_dim;
+        char *aux = vector->str_array[index];
+        vector->str_array[index] = vector->str_array[i];
+        vector->str_array[i] = aux;
     }
-
-    str_vector_t new_vect_random = str_vector_new();
-    new_vect_random.l_dim = vector->l_dim;
-    new_vect_random.p_dim = vector->p_dim;
-
-    for(int i = 0; i < vector->l_dim; i++){
-        new_vect_random.str_array[i] = vector->str_array[arreglo_aux[i]];
-    } 
-    free(vector);
-    vector = &new_vect_random;
 }
 
 
 
 
-static int cmpstringp_seq(const void *p1, const void *p2) {
+static int cmpstringp(const void *p1, const void *p2) {
    return strcmp(* (char * const *) p1, * (char * const *) p2);
 }
 
 static int cmpstringp_rev(const void *p1, const void *p2) {
-   return !strcmp(* (char * const *) p1, * (char * const *) p2);
+   return -1 * strcmp(* (char * const *) p1, * (char * const *) p2);
 }
-
 
 /**
  * Ordena el vector de acuerdo a el modo elegido.
@@ -179,9 +124,9 @@ void str_vector_sort(str_vector_t *vector, enum sort_mode mode){
     if(mode == SHUFFLE) {
         shuffle(vector);
     }else if(mode == REVERSE) {
-        qsort(vector->str_array, vector->l_dim-1, sizeof(char *), cmpstringp_rev);
+        qsort(vector->str_array, vector->l_dim, sizeof(char *), cmpstringp_rev);
     }else{
-        qsort(vector->str_array, vector->l_dim-1, sizeof(char *), cmpstringp_seq);
+        qsort(vector->str_array, vector->l_dim, sizeof(char *), cmpstringp);
         // Si se omiten -r o -s se ordenara el archivo en el orden dado por los ASCII de sus elementos.
     }
 }

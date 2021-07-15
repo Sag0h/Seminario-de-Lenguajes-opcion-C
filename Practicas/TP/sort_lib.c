@@ -1,7 +1,7 @@
-#include "sortlib.h"
+#include "sort_lib.h"
 
 void count_function( /*@in@*/ FILE *fpin){
-    char *mem=malloc(sizeof(char)*1024);
+    char *mem=malloc(sizeof(char)*BUFSIZ);
     int c = 0;
     while(fgets(mem, 1024, fpin) != NULL){
         c++;
@@ -30,23 +30,24 @@ void sort_file( /*@ in @*/  FILE *fpin,
     
     char line[BUFSIZ];
     while (fgets(line, BUFSIZ, fpin) != NULL){
-        // if (strlen(line) < BUFSIZE -1) ok sino realocar?
         char *aux = malloc(strlen(line)+1);
         if (aux == NULL){
             fprintf(stderr, "Error alocando memoria para la linea leida.\n");
             exit(EXIT_FAILURE);
         }
         strcpy(aux, line);
-        //str_vector_append(&array, aux);
-        str_vector_append_sorted(&array, aux, mode);
+        str_vector_append(&array, aux);
+        //str_vector_append_sorted(&array, aux, mode);
         
     }
     
+ 
+    str_vector_sort(&array, mode);
+
     for(int i = 0; i < array.l_dim; i++){
         printf("%s\n", array.str_array[i]);
     }
  
-    //str_vector_sort(&array, mode);
     
     for(int i = 0; i < array.l_dim; i++){
         fputs(array.str_array[i], fpout);

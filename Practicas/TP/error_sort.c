@@ -1,4 +1,4 @@
-#include "error-sort.h"
+#include "error_sort.h"
 
 int output_error(FILE *fp, error_t e)
 {

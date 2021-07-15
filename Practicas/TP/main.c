@@ -1,9 +1,9 @@
-#include "sortlib.h"
+#include "sort_lib.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "error-sort.h"
+#include "error_sort.h"
 
 /*
 -r o --reverse
@@ -108,8 +108,29 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
+    if(count){
+        if((shuffle) || (reverse) || (arg_o != NULL)){
+            fprintf(stderr, "Warning: se ignorarán los argumentos: \"-o , --output <archivo>, -s, --shuffle, -r, --reverse\".\n");
+        }
+        
+
+        if ( (arg_i !=NULL) && (! (input = fopen(arg_i,"r")) ) ){
+            output_error(stderr, -E_FILE_ERROR);
+            perror(" ");
+            exit(-E_FILE_ERROR);  
+        }
+
+        if(arg_i == NULL){
+            input = stdin;
+            arg_i = "STDIN";
+        }  
+
+        count_function(input);
+        exit(0);
+    }
+
     if ((reverse) && (shuffle)) {
-        puts("Warning: no se puede usar -r --reverse y -s --shuffle a la vez.");
+        fprintf(stderr ,"Warning: no se puede usar -r --reverse y -s --shuffle a la vez.\n");
         help();
         return -2;
     }
@@ -139,13 +160,7 @@ int main(int argc, char *argv[]){
         arg_o = "STDOUT";
     }
 
-    if(count){
-        if((shuffle) || (reverse)){
-            puts("Warning: se ignorarán los argumentos: \"-o , --output <archivo>, -s, --shuffle, -r, --reverse\".");
-        } 
-        count_function(input);
-        exit(0);
-    }
+    
 
     // leer y ordena
     
