@@ -1,6 +1,5 @@
 #include "str_vector_t.h"
 
-
 /******************************************************************
 * Funciones                                                       *
 ******************************************************************/
@@ -134,6 +133,7 @@ void str_vector_sort(str_vector_t *vector, enum sort_mode mode){
 /**
  * Libera la memoria alocada para el vector.
  */
+
 void str_vector_free(str_vector_t *vector){
     vector->p_dim = 0;
     vector->l_dim = 0;

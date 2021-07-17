@@ -13,6 +13,9 @@ typedef int error_t;
 #define   E_FILE_ERROR    3
 #define   E_ALLOC_ERROR   4
 #define   E_NOTIMPL_ERROR 10
+#define   E_NO_NAME 5
+#define   E_ARG_INV 6
+#define   E_I_O_MAX 7
 
 int output_error(FILE *fp, error_t e);
 

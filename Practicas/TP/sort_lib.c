@@ -36,18 +36,14 @@ void sort_file( /*@ in @*/  FILE *fpin,
             exit(EXIT_FAILURE);
         }
         strcpy(aux, line);
-        str_vector_append(&array, aux);
-        //str_vector_append_sorted(&array, aux, mode);
+        //str_vector_append(&array, aux);
+        str_vector_append_sorted(&array, aux, mode);
         
     }
     
  
-    str_vector_sort(&array, mode);
+    //str_vector_sort(&array, mode);
 
-    for(int i = 0; i < array.l_dim; i++){
-        printf("%s\n", array.str_array[i]);
-    }
- 
     
     for(int i = 0; i < array.l_dim; i++){
         fputs(array.str_array[i], fpout);

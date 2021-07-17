@@ -23,9 +23,8 @@ typedef struct str_vect str_vector_t;
 // Retorna el elemento en la posición index del vector, si la
 // posición index no existe retorna NULL.
 
-#define str_vector_get(vector, index) {\
-    ((index) < (vector.l_dim)) ? (vector.str_array[(index)]) : NULL ;\
-}
+#define str_vector_get(vector, index) (((index) < (vector.l_dim)) ? (vector.str_array[(index)]) : NULL)
+
 
 // Guarda el elemento en la posición index del vector, si el
 // vector no tiene posiciones disponibles para tantos elementos,

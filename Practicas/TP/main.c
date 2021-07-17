@@ -16,10 +16,6 @@ Lee las líneas desde el archivo indicado. Si se omite se leen desde stdin.
 Escribe los resultados en el archivo indicado. Si se omite se escriben en stdout.
 */
 
-#define COD_ERROR_FALTA_NOMBRE 2
-#define COD_ERROR_ARG_INV 3
-#define COD_ERROR_I_O_MAX 4
-
 void help(){
     puts("Este programa se utiliza mediante los siguientes argumentos:");
     puts("\t-r o --reverse\nInvierte la condición de ordenación.");
@@ -60,7 +56,7 @@ int procesar_args(
                 i++;
             } else {
                 puts("Error. No se ingreso nombre del archivo.");
-                return COD_ERROR_FALTA_NOMBRE;
+                return E_NO_NAME;
             }
             
         } else if ((!strcmp(argv[i], "-o")) || (!strcmp(argv[i], "--output"))) {
@@ -70,7 +66,7 @@ int procesar_args(
                 i++;
             } else {
                 puts("Error. No se ingreso nombre del archivo.");
-                return COD_ERROR_FALTA_NOMBRE;
+                return E_NO_NAME;
             }
         } else if(!strcmp(argv[i], "-c") || (!strcmp(argv[i], "--count"))){
             *count = 1;
@@ -79,12 +75,12 @@ int procesar_args(
             exit(0);
         }else {
             printf("Argumento invalido \"%s\"\n", argv[i]);
-            return COD_ERROR_ARG_INV;
+            return E_ARG_INV;
         }
     }
 
     if( (arg_i_c > 1) || (arg_o_c > 1)){
-        return COD_ERROR_I_O_MAX;
+        return E_I_O_MAX;
     }
 
     return 0;
@@ -126,6 +122,7 @@ int main(int argc, char *argv[]){
         }  
 
         count_function(input);
+        fclose(input);
         exit(0);
     }
 
